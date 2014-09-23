@@ -104,8 +104,12 @@ define logstash::service::init{
 
     # init file from template
     if ($logstash::init_template != undef) {
+      $init_file = $logstash::service_provider ? {
+        'systemd' => "/etc/systemd/system/${name}.service",
+        default   => "/etc/init.d/${name}"
+      }
 
-      file { "/etc/init.d/${name}":
+      file { $init_file:
         ensure  => $logstash::ensure,
         content => template($logstash::init_template),
         owner   => 'root',
@@ -124,11 +128,6 @@ define logstash::service::init{
     before => Service[$name],
   }
 
-  $service_provider = $::osfamily ? {
-    'Debian' => 'debian',
-    default  => 'init'
-  }
-
   # action
   service { $name:
     ensure     => $service_ensure,
@@ -137,7 +136,7 @@ define logstash::service::init{
     hasstatus  => $logstash::params::service_hasstatus,
     hasrestart => $logstash::params::service_hasrestart,
     pattern    => $logstash::params::service_pattern,
-    provider   => $service_provider
+    provider   => $logstash::service_provider
   }
 
 }

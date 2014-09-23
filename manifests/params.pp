@@ -130,7 +130,8 @@ class logstash::params {
       $service_hasrestart = true
       $service_hasstatus  = true
       $service_pattern    = $service_name
-      $service_providers  = [ 'init' ]
+      $service_providers  = [ 'init', 'systemd' ]
+      $service_provider   = 'init'
       $defaults_location  = '/etc/sysconfig'
     }
     'Debian', 'Ubuntu': {
@@ -138,7 +139,8 @@ class logstash::params {
       $service_hasrestart = true
       $service_hasstatus  = true
       $service_pattern    = $service_name
-      $service_providers  = [ 'init' ]
+      $service_providers  = [ 'debian' ]
+      $service_provider   = 'debian'
       $defaults_location  = '/etc/default'
     }
     'Darwin': {
@@ -147,6 +149,7 @@ class logstash::params {
       $service_hasstatus  = true
       $service_pattern    = $service_name
       $service_providers  = [ 'launchd' ]
+      $service_provider   = 'launchd'
       $defaults_location  = false
     }
     default: {

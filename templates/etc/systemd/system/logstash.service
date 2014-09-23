@@ -1,0 +1,20 @@
+[Unit]
+Description=Logstash
+Documentation=http://logstash.net/docs/1.4.2/
+BindTo=network.target
+Before=syslog.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+User=logstash
+Group=logstash
+ExecStart=/opt/logstash/bin/logstash agent -f ${LS_CONF_DIR} -l ${LS_LOG_FILE}
+EnvironmentFile=/etc/sysconfig/logstash
+WorkingDirectory=/var/lib/logstash
+Nice=19
+LimitNOFILE=16384
+StandardOutput=journal
+StandardError=journal

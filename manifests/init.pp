@@ -173,7 +173,7 @@ class logstash(
   $purge_configdir     = $logstash::params::purge_configdir,
   $java_install        = false,
   $java_package        = undef,
-  $service_provider    = 'init',
+  $service_provider    = $logstash::params::service_provider,
   $init_defaults       = undef,
   $init_defaults_file  = undef,
   $init_template       = undef,
